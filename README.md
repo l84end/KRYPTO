@@ -10,10 +10,12 @@ mohly být z hlediska bezpečnosti šifrovány, ale nejsou. Aplikace bude vytvá
 obvyklého provozu v síti a bude detekovat nastalé odchylky (změna velikosti a
 množství šifrovaných dat, protokolů, zdrojových/cílových adres apod.). Simulujte různé
 scénáře síťového provozu a na nich otestujte vytvořenou aplikaci.
+
 Projekt naprogramujte ve Vámi zvoleném programovacím jazyku s využitím
 dostupných knihoven.
 
 ## What is needed:
+ - panda + matplob
  - wireshark
  - tshark
  - python3-tk
