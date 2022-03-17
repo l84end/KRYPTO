@@ -1,6 +1,6 @@
 # Some notes
 
-##Zadání práce 
+## Zadání práce 
 
 Navrhněte a naprogramujte aplikaci, která bude detekovat šifrovaný provoz v síti a
 zobrazovat jeho procentuální zastoupení oproti celkovému provozu v síti. Aplikace
