@@ -22,16 +22,12 @@ def packet_decider(packet):
     global tcp_encrypted
 
     if "IP" in packet:
-        # something = capture[0]
-        # print(f'Ja fakt netusim {something}')
-        if "QUIC" in packet:
-            udp_encrypted += 1
-        elif "UDP" in packet:
-            # TBD: Detection of encrypted packets
-            # print(f'UDP: {packet.udp.payload}')
-            udp_readable += 1
+        if "UDP" in packet:
+            if str(packet).count("Layer") > 3:
+                udp_readable += 1
+            else:
+                udp_encrypted += 1
         elif "TCP" in packet:
-            # TBD: Get better definition of TLS version and so
             if 'tls' in dir(packet):
                 if 'record_version' in dir(packet.tls):
                     if packet.tls.record_version == '0x00000303' or packet.tls.record_version == '0x00000302' \
