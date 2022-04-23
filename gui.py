@@ -8,6 +8,7 @@ class App:
     def __init__(self, root):
 
         self.capture_time = ""
+        self.pocet_paketu = 0
 
         #setting title
         root.title("Wireshark 2.0")
@@ -30,15 +31,15 @@ class App:
         GButton_start.place(x=10,y=10,width=112,height=41)
         GButton_start["command"] = self.GButton_start_command
 
-        GButton_stop=tk.Button(root)
-        GButton_stop["bg"] = "#efefef"
-        ft = tkFont.Font(family='Times',size=12)
-        GButton_stop["font"] = ft
-        GButton_stop["fg"] = "#000000"
-        GButton_stop["justify"] = "center"
-        GButton_stop["text"] = "STOP"
-        GButton_stop.place(x=10,y=70,width=112,height=41)
-        GButton_stop["command"] = self.GButton_stop_command
+        # GButton_stop=tk.Button(root)
+        # GButton_stop["bg"] = "#efefef"
+        # ft = tkFont.Font(family='Times',size=12)
+        # GButton_stop["font"] = ft
+        # GButton_stop["fg"] = "#000000"
+        # GButton_stop["justify"] = "center"
+        # GButton_stop["text"] = "STOP"
+        # GButton_stop.place(x=10,y=70,width=112,height=41)
+        # GButton_stop["command"] = self.GButton_stop_command
 
         GLabel_cas=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
@@ -61,16 +62,16 @@ class App:
         self.GLabel_cas_text["font"] = ft
         self.GLabel_cas_text["fg"] = "#333333"
         self.GLabel_cas_text["justify"] = "left"
-        self.GLabel_cas_text["text"] = "0:2:36"
+        self.GLabel_cas_text["text"] = "0:0:0"
         self.GLabel_cas_text.place(x=160,y=120,width=72,height=41)
 
-        GLabel_zachyceno_text=tk.Label(root)
+        self.GLabel_zachyceno_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
-        GLabel_zachyceno_text["font"] = ft
-        GLabel_zachyceno_text["fg"] = "#333333"
-        GLabel_zachyceno_text["justify"] = "left"
-        GLabel_zachyceno_text["text"] = "5640"
-        GLabel_zachyceno_text.place(x=160,y=160,width=70,height=41)
+        self.GLabel_zachyceno_text["font"] = ft
+        self.GLabel_zachyceno_text["fg"] = "#333333"
+        self.GLabel_zachyceno_text["justify"] = "left"
+        self.GLabel_zachyceno_text["text"] = "0"
+        self.GLabel_zachyceno_text.place(x=160,y=160,width=70,height=41)
 
         GButton_vysledky=tk.Button(root)
         GButton_vysledky["bg"] = "#efefef"
@@ -208,6 +209,15 @@ class App:
         GLabel_zmena_obj_sif_dat_hodnota["text"] = "o 24 % více"
         GLabel_zmena_obj_sif_dat_hodnota.place(x=670,y=390,width=100,height=42)
 
+        self.GLineEdit_293 = tk.Entry(root)
+        self.GLineEdit_293["borderwidth"] = "1px"
+        ft = tkFont.Font(family='Times', size=12)
+        self.GLineEdit_293["font"] = ft
+        self.GLineEdit_293["fg"] = "#333333"
+        self.GLineEdit_293["justify"] = "left"
+        self.GLineEdit_293["text"] = "Entry"
+        self.GLineEdit_293.place(x=10, y=70, width=112, height=30)
+
     def time_convert(self, sec):
         mins = sec // 60
         sec = sec % 60
@@ -224,13 +234,25 @@ class App:
             self.GLabel_cas_text["text"] = self.capture_time
             time.sleep(0.5)
 
+    def update_capture_pkt(self):
+        while (self.is_capture == True):
+            pkt = main.get_number_of_packets()
+            self.GLabel_zachyceno_text["text"] = str(pkt)
+
+            if int(pkt) >= self.pocet_paketu:
+                self.GButton_stop_command()
+
     def GButton_start_command(self):
         print("Start...")
-        thread = Thread(target=main.live_capturing, args=())
+        self.pocet_paketu = int(self.GLineEdit_293.get())
+        print(self.pocet_paketu)
+        thread = Thread(target=main.live_capturing, args=[self.pocet_paketu])
         thread.start()
         self.is_capture = True
         threadTime = Thread(target=self.update_capture_time, args=())
         threadTime.start()
+        threadPkt = Thread(target=self.update_capture_pkt, args=())
+        threadPkt.start()
 
 
     def GButton_stop_command(self):
