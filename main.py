@@ -13,6 +13,7 @@ tcp_readable = 0
 udp_encrypted = 0
 udp_readable = 0
 encrypted_traffic = 0
+running = True
 
 
 def packet_decider(packet):
@@ -64,16 +65,12 @@ def live_capturing():
     capture = pyshark.LiveCapture(interface=str(interfaces[1]))
     file = open('packet.save', 'w')
 
-    for packet in capture.sniff_continuously(packet_count=1000):
-        file.write(str(packet) + '\n\n\n')
+    for packet in capture.sniff_continuously():
+        file.write(str(packet) + '\n')
         packet_decider(packet)
-
-    logging.info(f'Total number of packets packets: {number_of_packets}')
-    logging.info(f"TCP Encrypted: {tcp_encrypted}")
-    logging.info(f"TCP: {tcp_readable}")
-    logging.info(f"UDP Encrypted: {udp_encrypted}")
-    logging.info(f"UDP: {udp_readable}")
-
+        if running != 1:
+            logging.info("Stopping it")
+            break
 
 def create_graph():
     network_traffic_capture = []
@@ -106,6 +103,19 @@ def get_encrypted_traffic():
 
 def get_total_packets():
     return number_of_packets
+
+
+def set_running(status):
+    global running
+    running = status
+
+
+def print_stats_into_logs():
+    logging.info(f'Total number of packets packets: {number_of_packets}')
+    logging.info(f"TCP encrypted: {tcp_encrypted}")
+    logging.info(f"TCP readable: {tcp_readable}")
+    logging.info(f"UDP encrypted: {udp_encrypted}")
+    logging.info(f"UDP readable: {udp_readable}")
 
 
 def reset_statistics():
