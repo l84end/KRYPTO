@@ -1,8 +1,14 @@
 import tkinter as tk
 import tkinter.font as tkFont
+import main
+from threading import Thread
+import time
 
 class App:
     def __init__(self, root):
+
+        self.capture_time = ""
+
         #setting title
         root.title("Wireshark 2.0")
         #setting window size
@@ -50,13 +56,13 @@ class App:
         GLabel_zachyceno["text"] = "Zachyceno paketů:"
         GLabel_zachyceno.place(x=5,y=160,width=150,height=43)
 
-        GLabel_cas_text=tk.Label(root)
+        self.GLabel_cas_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
-        GLabel_cas_text["font"] = ft
-        GLabel_cas_text["fg"] = "#333333"
-        GLabel_cas_text["justify"] = "left"
-        GLabel_cas_text["text"] = "0:2:36"
-        GLabel_cas_text.place(x=160,y=120,width=72,height=41)
+        self.GLabel_cas_text["font"] = ft
+        self.GLabel_cas_text["fg"] = "#333333"
+        self.GLabel_cas_text["justify"] = "left"
+        self.GLabel_cas_text["text"] = "0:2:36"
+        self.GLabel_cas_text.place(x=160,y=120,width=72,height=41)
 
         GLabel_zachyceno_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
@@ -202,13 +208,34 @@ class App:
         GLabel_zmena_obj_sif_dat_hodnota["text"] = "o 24 % více"
         GLabel_zmena_obj_sif_dat_hodnota.place(x=670,y=390,width=100,height=42)
 
+    def time_convert(self, sec):
+        mins = sec // 60
+        sec = sec % 60
+        hours = mins // 60
+        mins = mins % 60
+        return "{0}:{1}:{2}".format(int(hours), int(mins), round(sec))
+
+    def update_capture_time(self):
+        start_time = time.time()
+        while (self.is_capture == True):
+            end_time = time.time()
+            time_lapsed = end_time - start_time
+            self.capture_time = self.time_convert(time_lapsed)
+            self.GLabel_cas_text["text"] = self.capture_time
+            time.sleep(0.5)
+
     def GButton_start_command(self):
         print("Start...")
+        thread = Thread(target=main.live_capturing, args=())
+        thread.start()
+        self.is_capture = True
+        threadTime = Thread(target=self.update_capture_time, args=())
+        threadTime.start()
 
 
     def GButton_stop_command(self):
         print("Stop...")
-
+        self.is_capture = False
 
     def GButton_vysledky_command(self):
         print("Vysledky...")
@@ -216,6 +243,7 @@ class App:
 
     def GButton_graf_protokolu_command(self):
         print("Graf protokolu...")
+        main.create_graph()
 
 if __name__ == "__main__":
     root = tk.Tk()
