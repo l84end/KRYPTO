@@ -51,8 +51,10 @@ def packet_decider(packet):
                 tcp_readable += 1
     number_of_packets += 1
 
+def get_number_of_packets():
+    return number_of_packets
 
-def live_capturing():
+def live_capturing(pocet_paketu):
     """
     Funkce sbira data z interface(nastaveno je maximalne 1000 packetu(packet_count))
     Mozna to bude chtit jine cislo interface, mne funguje 1. parametr
@@ -64,7 +66,7 @@ def live_capturing():
     capture = pyshark.LiveCapture(interface=str(interfaces[1]))
     file = open('packet.save', 'w')
 
-    for packet in capture.sniff_continuously(packet_count=1000):
+    for packet in capture.sniff_continuously(packet_count=pocet_paketu):
         file.write(str(packet) + '\n\n\n')
         packet_decider(packet)
 
