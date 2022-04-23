@@ -67,12 +67,17 @@ def live_capturing(pocet_paketu):
     capture = pyshark.LiveCapture(interface=str(interfaces[1]))
     file = open('packet.save', 'w')
 
-    for packet in capture.sniff_continuously():
-        file.write(str(packet) + '\n')
-        packet_decider(packet)
-        if running != 1:
-            logging.info("Stopping it")
-            break
+    if pocet_paketu == 0:
+        for packet in capture.sniff_continuously():
+            file.write(str(packet) + '\n')
+            packet_decider(packet)
+            if not running:
+                logging.info("Stopping it")
+                break
+    else:
+        for packet in capture.sniff_continuously(pocet_paketu):
+            file.write(str(packet) + '\n')
+            packet_decider(packet)
 
 def create_graph():
     network_traffic_capture = []
