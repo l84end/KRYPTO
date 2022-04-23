@@ -7,6 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] - %(message)s', level=logging.INFO)
+
+# Set of global variables
 number_of_packets = 0
 tcp_encrypted = 0
 tcp_readable = 0
@@ -14,6 +16,8 @@ udp_encrypted = 0
 udp_readable = 0
 encrypted_traffic = 0
 running = True
+source_ip = {}
+destination_ip = {}
 
 
 def packet_decider(packet):
@@ -28,8 +32,12 @@ def packet_decider(packet):
     global tcp_readable
     global tcp_encrypted
     global encrypted_traffic
+    global source_ip
+    global destination_ip
 
     if "IP" in packet:
+        source_ip[packet.ip.src] = source_ip.get(packet.ip.src, 0) + 1
+        destination_ip[packet.ip.dst] = destination_ip.get(packet.ip.dst, 0) + 1
         if "UDP" in packet:
             if "QUIC" in packet:
                 udp_encrypted += 1
@@ -52,8 +60,10 @@ def packet_decider(packet):
                 tcp_readable += 1
     number_of_packets += 1
 
+
 def get_number_of_packets():
     return number_of_packets
+
 
 def live_capturing(pocet_paketu):
     """
@@ -82,15 +92,13 @@ def live_capturing(pocet_paketu):
                 logging.info("Stopping it")
                 break
 
-def create_graph():
-    network_traffic_capture = []
-    # Vlozeni data do pandy (Ne kocky)
-    network_traffic_capture.append(["TCP Encrypted", tcp_encrypted])
-    network_traffic_capture.append(["TCP", tcp_readable])
-    network_traffic_capture.append(["UDP Encrypted", udp_encrypted])
-    network_traffic_capture.append(["UDP", udp_readable])
 
-    data = pd.DataFrame(network_traffic_capture, columns=['Protocol', 'Number'])
+def create_graph():
+    network_traffic_capture = [["TCP Encrypted", tcp_encrypted], ["TCP", tcp_readable],
+                               ["UDP Encrypted", udp_encrypted], ["UDP", udp_readable]]
+    # Vlozeni data do pandy (Ne kocky)
+
+    data = pd.DataFrame(network_traffic_capture, columns=['Protocol', 'Packets'])
 
     # Naprosto uzasny graf, @FrontendPerson to pak se u tebe zmeni, jen docasne at vidim
     x = list(data.iloc[:, 0])
@@ -126,6 +134,8 @@ def print_stats_into_logs():
     logging.info(f"TCP readable: {tcp_readable}")
     logging.info(f"UDP encrypted: {udp_encrypted}")
     logging.info(f"UDP readable: {udp_readable}")
+    logging.info(f"Source IPs: {source_ip}")
+    logging.info(f"Destination IPs: {destination_ip}")
 
 
 def reset_statistics():
@@ -139,12 +149,16 @@ def reset_statistics():
     global tcp_readable
     global tcp_encrypted
     global encrypted_traffic
+    global source_ip
+    global destination_ip
     number_of_packets = 0
     tcp_encrypted = 0
     tcp_readable = 0
     udp_encrypted = 0
     udp_readable = 0
     encrypted_traffic = 0
+    source_ip = {}
+    destination_ip = {}
 
 
 def main():
