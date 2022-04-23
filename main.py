@@ -6,6 +6,8 @@ import netifaces
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import gui
+
 logging.basicConfig(format='%(asctime)s [%(levelname)s] - %(message)s', level=logging.INFO)
 
 # Set of global variables
@@ -94,9 +96,9 @@ def live_capturing(pocet_paketu):
 
 
 def create_graph():
+    # Vlozeni data do pandy (Ne kocky)
     network_traffic_capture = [["TCP Encrypted", tcp_encrypted], ["TCP", tcp_readable],
                                ["UDP Encrypted", udp_encrypted], ["UDP", udp_readable]]
-    # Vlozeni data do pandy (Ne kocky)
 
     data = pd.DataFrame(network_traffic_capture, columns=['Protocol', 'Packets'])
 
@@ -108,11 +110,13 @@ def create_graph():
     plt.xlabel("Protocol")
     plt.ylabel("Number of packets")
     plt.show()
-    logging.info('Schluss fur Heute')
 
 
 def get_encrypted_traffic_percentage():
-    return round(100 * (udp_encrypted + tcp_encrypted) / number_of_packets, 2)
+    if number_of_packets == 0:
+        return 0
+    else:
+        return round(100 * (udp_encrypted + tcp_encrypted) / number_of_packets, 2)
 
 
 def get_encrypted_traffic():
@@ -121,6 +125,10 @@ def get_encrypted_traffic():
 
 def get_total_packets():
     return number_of_packets
+
+
+def encrypted_packets():
+    return udp_encrypted + tcp_encrypted
 
 
 def set_running(status):
@@ -167,6 +175,7 @@ def main():
     # Kliknutim na 'Run' souhlasite se vsim
     live_capturing()
     create_graph()
+    logging.info('Schluss fur Heute')
 
 
 if __name__ == '__main__':

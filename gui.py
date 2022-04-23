@@ -31,15 +31,15 @@ class App:
         GButton_start.place(x=10,y=10,width=112,height=41)
         GButton_start["command"] = self.GButton_start_command
 
-        # GButton_stop=tk.Button(root)
-        # GButton_stop["bg"] = "#efefef"
-        # ft = tkFont.Font(family='Times',size=12)
-        # GButton_stop["font"] = ft
-        # GButton_stop["fg"] = "#000000"
-        # GButton_stop["justify"] = "center"
-        # GButton_stop["text"] = "STOP"
-        # GButton_stop.place(x=10,y=70,width=112,height=41)
-        # GButton_stop["command"] = self.GButton_stop_command
+        GButton_stop=tk.Button(root)
+        GButton_stop["bg"] = "#efefef"
+        ft = tkFont.Font(family='Times',size=12)
+        GButton_stop["font"] = ft
+        GButton_stop["fg"] = "#000000"
+        GButton_stop["justify"] = "center"
+        GButton_stop["text"] = "STOP"
+        GButton_stop.place(x=10,y=70,width=112,height=41)
+        GButton_stop["command"] = self.GButton_stop_command
 
         GLabel_cas=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
@@ -101,13 +101,13 @@ class App:
         GLabel_754["relief"] = "flat"
         GLabel_754.place(x=290,y=70,width=260,height=42)
 
-        GLabel_pomer_dat_text=tk.Label(root)
+        self.GLabel_pomer_dat_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
-        GLabel_pomer_dat_text["font"] = ft
-        GLabel_pomer_dat_text["fg"] = "#333333"
-        GLabel_pomer_dat_text["justify"] = "left"
-        GLabel_pomer_dat_text["text"] = "86"
-        GLabel_pomer_dat_text.place(x=570,y=70,width=57,height=42)
+        self.GLabel_pomer_dat_text["font"] = ft
+        self.GLabel_pomer_dat_text["fg"] = "#333333"
+        self.GLabel_pomer_dat_text["justify"] = "left"
+        self.GLabel_pomer_dat_text["text"] = "86"
+        self.GLabel_pomer_dat_text.place(x=570,y=70,width=57,height=42)
 
         GButton_graf_protokolu=tk.Button(root)
         GButton_graf_protokolu["bg"] = "#efefef"
@@ -128,13 +128,13 @@ class App:
         GLabel_19["text"] = "Počet šifrovaných paketů:"
         GLabel_19.place(x=263,y=120,width=260,height=42)
 
-        GLabel_pocet_sif_pkt_text=tk.Label(root)
+        self.GLabel_pocet_sif_pkt_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
-        GLabel_pocet_sif_pkt_text["font"] = ft
-        GLabel_pocet_sif_pkt_text["fg"] = "#333333"
-        GLabel_pocet_sif_pkt_text["justify"] = "left"
-        GLabel_pocet_sif_pkt_text["text"] = "5098"
-        GLabel_pocet_sif_pkt_text.place(x=570,y=120,width=57,height=42)
+        self.GLabel_pocet_sif_pkt_text["font"] = ft
+        self.GLabel_pocet_sif_pkt_text["fg"] = "#333333"
+        self.GLabel_pocet_sif_pkt_text["justify"] = "left"
+        self.GLabel_pocet_sif_pkt_text["text"] = "0"
+        self.GLabel_pocet_sif_pkt_text.place(x=570,y=120,width=57,height=42)
 
         GLabel_648=tk.Label(root)
         GLabel_648["anchor"] = "center"
@@ -145,13 +145,13 @@ class App:
         GLabel_648["text"] = " Celkový objem šifrovaných dat [B]:"
         GLabel_648.place(x=295,y=170,width=260,height=42)
 
-        GLabel_objem_sif_dat_text=tk.Label(root)
+        self.GLabel_objem_sif_dat_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
-        GLabel_objem_sif_dat_text["font"] = ft
-        GLabel_objem_sif_dat_text["fg"] = "#333333"
-        GLabel_objem_sif_dat_text["justify"] = "left"
-        GLabel_objem_sif_dat_text["text"] = "3 456 543"
-        GLabel_objem_sif_dat_text.place(x=570,y=170,width=100,height=42)
+        self.GLabel_objem_sif_dat_text["font"] = ft
+        self.GLabel_objem_sif_dat_text["fg"] = "#333333"
+        self.GLabel_objem_sif_dat_text["justify"] = "left"
+        self.GLabel_objem_sif_dat_text["text"] = "0"
+        self.GLabel_objem_sif_dat_text.place(x=570,y=170,width=100,height=42)
 
         GLabel_942=tk.Label(root)
         ft = tkFont.Font(family='Times',size=26)
@@ -236,16 +236,20 @@ class App:
 
     def update_capture_pkt(self):
         while (self.is_capture == True):
-            pkt = main.get_number_of_packets()
-            self.GLabel_zachyceno_text["text"] = str(pkt)
+            self.GLabel_zachyceno_text["text"] = str(main.get_number_of_packets())
+            self.GLabel_objem_sif_dat_text["text"] = str(main.get_encrypted_traffic())
+            self.GLabel_pomer_dat_text["text"] = str(main.get_encrypted_traffic_percentage())
+            self.GLabel_pocet_sif_pkt_text["text"] = str(main.encrypted_packets())
+            if self.pocet_paketu != 0 and self.pocet_paketu == main.get_number_of_packets():
+                self.is_capture = False
+            time.sleep(0.5)
 
-            if int(pkt) >= self.pocet_paketu:
-                self.GButton_stop_command()
 
     def GButton_start_command(self):
         print("Start...")
         self.pocet_paketu = int(self.GLineEdit_293.get())
         print(self.pocet_paketu)
+        main.set_running(True)
         thread = Thread(target=main.live_capturing, args=[self.pocet_paketu])
         thread.start()
         self.is_capture = True
@@ -257,15 +261,19 @@ class App:
 
     def GButton_stop_command(self):
         print("Stop...")
+        main.set_running(False)
         self.is_capture = False
+
 
     def GButton_vysledky_command(self):
         print("Vysledky...")
+        main.print_stats_into_logs()
 
 
     def GButton_graf_protokolu_command(self):
         print("Graf protokolu...")
         main.create_graph()
+
 
 if __name__ == "__main__":
     root = tk.Tk()
