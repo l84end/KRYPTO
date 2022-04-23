@@ -78,6 +78,9 @@ def live_capturing(pocet_paketu):
         for packet in capture.sniff_continuously(pocet_paketu):
             file.write(str(packet) + '\n')
             packet_decider(packet)
+            if not running:
+                logging.info("Stopping it")
+                break
 
 def create_graph():
     network_traffic_capture = []
