@@ -1,5 +1,6 @@
 # This is a sample Python script.
 import logging
+import sys
 
 import pyshark
 import netifaces
@@ -43,19 +44,19 @@ def packet_decider(packet):
         if "UDP" in packet:
             if "QUIC" in packet:
                 udp_encrypted += 1
-                encrypted_traffic += int(packet.udp.length)
+                encrypted_traffic += sys.getsizeof(packet.udp.payload)
             elif str(packet).count("Layer") > 3:
                 udp_readable += 1
             else:
                 udp_encrypted += 1
-                encrypted_traffic += int(packet.udp.length)
+                encrypted_traffic += sys.getsizeof(packet.udp.payload)
         elif "TCP" in packet:
             if 'tls' in dir(packet):
                 if 'record_version' in dir(packet.tls):
                     if packet.tls.record_version == '0x00000303' or packet.tls.record_version == '0x00000302' \
                             or packet.tls.record_version == '0x00000301':
                         tcp_encrypted += 1
-                        encrypted_traffic += int(packet.tcp.window_size)
+                        encrypted_traffic += sys.getsizeof(packet.tcp.payload)
                 else:
                     tcp_readable += 1
             else:
