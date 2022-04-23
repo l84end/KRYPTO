@@ -48,7 +48,7 @@ class App:
         GLabel_695["fg"] = "#333333"
         GLabel_695["justify"] = "left"
         GLabel_695["text"] = "Zachyceno paketů:"
-        GLabel_695.place(x=10,y=160,width=150,height=43)
+        GLabel_695.place(x=5,y=160,width=150,height=43)
 
         GLabel_895=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
@@ -82,7 +82,7 @@ class App:
         GLabel_104["fg"] = "#333333"
         GLabel_104["justify"] = "center"
         GLabel_104["text"] = "Výsledky"
-        GLabel_104.place(x=290,y=10,width=500,height=31)
+        GLabel_104.place(x=290,y=9,width=500,height=40)
 
         GLabel_754=tk.Label(root)
         GLabel_754["anchor"] = "center"
@@ -119,7 +119,7 @@ class App:
         GLabel_19["fg"] = "#333333"
         GLabel_19["justify"] = "left"
         GLabel_19["text"] = "Počet šifrovaných paketů:"
-        GLabel_19.place(x=290,y=120,width=260,height=42)
+        GLabel_19.place(x=263,y=120,width=260,height=42)
 
         GLabel_768=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -135,8 +135,8 @@ class App:
         GLabel_648["font"] = ft
         GLabel_648["fg"] = "#333333"
         GLabel_648["justify"] = "left"
-        GLabel_648["text"] = "Celkový objem šifrovaných dat [B]:"
-        GLabel_648.place(x=290,y=170,width=260,height=42)
+        GLabel_648["text"] = " Celkový objem šifrovaných dat [B]:"
+        GLabel_648.place(x=295,y=170,width=260,height=42)
 
         GLabel_622=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -152,7 +152,7 @@ class App:
         GLabel_942["fg"] = "#333333"
         GLabel_942["justify"] = "center"
         GLabel_942["text"] = "Detekované odchylky v provozu"
-        GLabel_942.place(x=290,y=300,width=500,height=42)
+        GLabel_942.place(x=280,y=300,width=500,height=42)
 
         GLabel_248=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -160,7 +160,7 @@ class App:
         GLabel_248["fg"] = "#333333"
         GLabel_248["justify"] = "left"
         GLabel_248["text"] = "Změna počtu šifrovaných paketů:"
-        GLabel_248.place(x=300,y=350,width=260,height=42)
+        GLabel_248.place(x=288,y=350,width=260,height=42)
 
         GLabel_449=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -184,7 +184,7 @@ class App:
         GLabel_180["fg"] = "#333333"
         GLabel_180["justify"] = "left"
         GLabel_180["text"] = "Změna objemu šifrovaných dát"
-        GLabel_180.place(x=300,y=390,width=260,height=42)
+        GLabel_180.place(x=278,y=390,width=260,height=42)
 
         GLabel_270=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
