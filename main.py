@@ -66,6 +66,8 @@ def packet_decider(packet):
                             or packet.tls.record_version == '0x00000301':
                         tcp_encrypted += 1
                         encrypted_traffic += sys.getsizeof(packet.tcp.payload)
+                    else:
+                        tcp_readable += 1
                 else:
                     tcp_readable += 1
             else:
