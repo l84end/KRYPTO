@@ -28,7 +28,7 @@ data = {}
 fig = ""
 line = ""
 change_packet_count = 0
-change_percentage = 0
+change_data = 0
 
 
 def packet_decider(packet):
@@ -172,14 +172,14 @@ def get_packet_sent_change():
     return round(100 * (1 - change), 2)
 
 
-def get_percentage_change():
-    global change_percentage
-    percentage = get_encrypted_traffic_percentage() - change_percentage
-    if change_percentage != 0:
-        change = change_percentage / percentage
+def get_encrypted_data_change():
+    global change_data
+    percentage = get_encrypted_traffic() - change_data
+    if change_data != 0:
+        change = change_data / percentage
     else:
         change = 0
-    change_percentage = percentage
+    change_data = percentage
 
     return round(100 * (1 - change), 2)
 
