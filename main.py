@@ -27,6 +27,8 @@ could_be_encrypted = 0
 data = {}
 fig = ""
 line = ""
+change_packet_count = 0
+change_percentage = 0
 
 
 def packet_decider(packet):
@@ -159,6 +161,29 @@ def create_graph_destination_ip():
     plt.show()
 
 
+def get_packet_sent_change():
+    global change_packet_count
+    packets_sent = get_encrypted_traffic() - change_packet_count
+    if change_packet_count != 0:
+        change = change_packet_count / packets_sent
+    else:
+        change = 0
+    change_packet_count = packets_sent
+    return round(100 * (1 - change), 2)
+
+
+def get_percentage_change():
+    global change_percentage
+    percentage = get_encrypted_traffic_percentage() - change_percentage
+    if change_percentage != 0:
+        change = change_percentage / percentage
+    else:
+        change = 0
+    change_percentage = percentage
+
+    return round(100 * (1 - change), 2)
+
+
 def get_encrypted_traffic_percentage():
     if number_of_packets == 0:
         return 0
@@ -224,9 +249,7 @@ def main():
     logging.info('Starting script to show traffic')
     # Spusteni sbirani soukromych dat
     # Kliknutim na 'Run' souhlasite se vsim
-    live_capturing(100)
-    create_graph_source_ip()
-    create_graph_destination_ip()
+    live_capturing(1000)
     logging.info('Schluss fur Heute')
 
 
