@@ -10,9 +10,10 @@ from matplotlib.animation import FuncAnimation
 
 import gui
 
+# Nastavení logovani
 logging.basicConfig(format='%(asctime)s [%(levelname)s] - %(message)s', level=logging.INFO)
 
-# Set of global variables
+# Nastavení globálních proměnných
 number_of_packets = 0
 tcp_encrypted = 0
 tcp_readable = 0
@@ -78,6 +79,10 @@ def packet_decider(packet):
 
 
 def get_number_of_packets():
+    """
+    Getter pro počet paketů
+    :return:
+    """
     return number_of_packets
 
 
@@ -110,6 +115,10 @@ def live_capturing(packets_to_detect):
 
 
 def create_graph():
+    """
+    Vytvoří graf paketů a průběžně ho aktualizuje
+    :return:
+    """
     network_traffic_capture = [["TCP Encrypted", tcp_encrypted], ["TCP", tcp_readable],
                                ["UDP Encrypted", udp_encrypted], ["UDP", udp_readable]]
 
@@ -144,6 +153,10 @@ def create_graph():
 
 
 def create_graph_source_ip():
+    """
+    Vytvoří graf zdrojové IP adresy
+    :return:
+    """
     plt.bar(*zip(*source_ip.items()))
     plt.title("Source IPs")
     plt.xlabel("Source IPs")
@@ -153,6 +166,10 @@ def create_graph_source_ip():
 
 
 def create_graph_destination_ip():
+    """
+    Vytvoří graf cílové IP adresy
+    :return:
+    """
     plt.bar(*zip(*destination_ip.items()))
     plt.title("Source IPs")
     plt.xlabel("Source IPs")
@@ -162,6 +179,10 @@ def create_graph_destination_ip():
 
 
 def get_packet_sent_change():
+    """
+    Vrátí data pro odchylku počtu paketů
+    :return:
+    """
     global change_packet_count
     packets_sent = get_encrypted_traffic() - change_packet_count
     if change_packet_count != 0 and packets_sent != 0:
@@ -173,6 +194,10 @@ def get_packet_sent_change():
 
 
 def get_encrypted_data_change():
+    """
+    Vrátí data pro odchylku počtu šifrovaných dat
+    :return:
+    """
     global change_data
     data_sent = get_encrypted_traffic() - change_data
     if change_data != 0 and data_sent != 0:
@@ -185,6 +210,10 @@ def get_encrypted_data_change():
 
 
 def get_encrypted_traffic_percentage():
+    """
+    Vrátí počet šifrovaných dat v procentech
+    :return:
+    """
     if number_of_packets == 0:
         return 0
     else:
@@ -192,23 +221,44 @@ def get_encrypted_traffic_percentage():
 
 
 def get_encrypted_traffic():
+    """
+    Getter šifrovaných dat
+    :return:
+    """
     return encrypted_traffic
 
 
 def get_total_packets():
+    """
+    Getter všech paketů
+    :return:
+    """
     return number_of_packets
 
 
 def encrypted_packets():
+    """
+    Getter šifrovaných paketů
+    :return:
+    """
     return udp_encrypted + tcp_encrypted
 
 
 def set_running(status):
+    """
+    Setter příznaku běhu zachytávání provozu
+    :param status:
+    :return:
+    """
     global running
     running = status
 
 
 def get_could_be_encrypted():
+    """
+    Getter, kolik by mělo být šifrováno
+    :return:
+    """
     return could_be_encrypted
 
 

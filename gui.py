@@ -6,7 +6,12 @@ import time
 
 class App:
     def __init__(self, root):
+        """
+        Konstruktor GUI
 
+        Sestaví GUI komponenty a GUI parametry, propojí tlačítka s funkcionalitou v main.py
+        :param root:
+        """
         self.capture_time = ""
         self.pocet_paketu = 0
 
@@ -231,6 +236,11 @@ class App:
         GLabel_zachytit_pkt.place(x=10, y=70, width=100, height=42)
 
     def time_convert(self, sec):
+        """
+        Funkce pro formátování času do textu
+        :param sec:
+        :return:
+        """
         mins = sec // 60
         sec = sec % 60
         hours = mins // 60
@@ -238,6 +248,10 @@ class App:
         return "{0}:{1}:{2}".format(int(hours), int(mins), round(sec))
 
     def update_capture_time(self):
+        """
+        Funkce pro aktualizace času zachytávání provozu
+        :return:
+        """
         start_time = time.time()
         while (self.is_capture == True):
             end_time = time.time()
@@ -247,6 +261,10 @@ class App:
             time.sleep(0.5)
 
     def update_capture_pkt(self):
+        """
+        Funkce pro aktualizace statistických dat
+        :return:
+        """
         while (self.is_capture == True):
             self.GLabel_zachyceno_text["text"] = str(main.get_number_of_packets())
             self.GLabel_objem_sif_dat_text["text"] = str(main.get_encrypted_traffic())
@@ -259,16 +277,28 @@ class App:
             time.sleep(0.5)
 
     def set_odchylky_text(self):
+        """
+        Zapíše texty pro odchylky do GUI komponent
+        :return:
+        """
         if (self.is_capture == True):
             self.GLabel_zmena_obj_sif_dat_hodnota["text"] = str(main.get_encrypted_data_change()) + " %"
             self.GLabel_zmena_poc_sif_pkt_hodnota["text"] = str(main.get_packet_sent_change()) + " %"
 
     def update_odchylky_text(self):
+        """
+        Funkce pro aktualizace textu pro odchylky
+        :return:
+        """
         while (self.is_capture == True):
             self.set_odchylky_text()
             time.sleep(10)
 
     def GButton_start_command(self):
+        """
+        Funkcionalita tlačítka start
+        :return:
+        """
         self.pocet_paketu = int(self.GLineEdit_293.get())
         print(self.pocet_paketu)
         main.set_running(True)
@@ -284,20 +314,40 @@ class App:
 
 
     def GButton_stop_command(self):
+        """
+        Funkcionalita tlačítka stop
+        :return:
+        """
         main.set_running(False)
         self.is_capture = False
 
 
     def GButton_graf_protokolu_command(self):
+        """
+        Funkcionalita tlačítka grafu protokolu
+        :return:
+        """
         main.create_graph()
 
     def GButton_source_ip_command(self):
+        """
+        Funkcionalita tlačítka grafu zdrojové adresy
+        :return:
+        """
         main.create_graph_source_ip()
 
     def GButton_destination_ip_command(self):
+        """
+        Funkcionalita tlačítka grafu cílové adresy
+        :return:
+        """
         main.create_graph_destination_ip()
 
     def GButton_statistika_command(self):
+        """
+        Funkcionalita tlačítka pro výpis statistiky
+        :return:
+        """
         print("Statistika")
         main.print_stats_into_logs()
 
