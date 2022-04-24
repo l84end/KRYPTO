@@ -38,7 +38,7 @@ class App:
         GButton_stop["fg"] = "#000000"
         GButton_stop["justify"] = "center"
         GButton_stop["text"] = "STOP"
-        GButton_stop.place(x=10,y=70,width=112,height=41)
+        GButton_stop.place(x=150,y=10,width=112,height=41)
         GButton_stop["command"] = self.GButton_stop_command
 
         GLabel_cas=tk.Label(root)

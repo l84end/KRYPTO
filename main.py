@@ -1,11 +1,12 @@
 # This is a sample Python script.
 import logging
 import sys
-
+import time
 import pyshark
 import netifaces
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 import gui
 
@@ -21,6 +22,10 @@ encrypted_traffic = 0
 running = True
 source_ip = {}
 destination_ip = {}
+network_traffic_capture = {}
+data = {}
+fig = ""
+line = ""
 
 
 def packet_decider(packet):
@@ -97,20 +102,37 @@ def live_capturing(pocet_paketu):
 
 
 def create_graph():
-    # Vlozeni data do pandy (Ne kocky)
     network_traffic_capture = [["TCP Encrypted", tcp_encrypted], ["TCP", tcp_readable],
                                ["UDP Encrypted", udp_encrypted], ["UDP", udp_readable]]
 
     data = pd.DataFrame(network_traffic_capture, columns=['Protocol', 'Packets'])
 
-    # Naprosto uzasny graf, @FrontendPerson to pak se u tebe zmeni, jen docasne at vidim
     x = list(data.iloc[:, 0])
     y = list(data.iloc[:, 1])
-    plt.bar(x, y)
-    plt.title("Stats of packets")
-    plt.xlabel("Protocol")
-    plt.ylabel("Number of packets")
-    plt.show()
+
+    plt.ion()
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    fig.suptitle('Stats of packets', fontsize=12)
+    bars = ax.bar(x, y)
+    plt.xlabel('Protocol', axes=ax)
+    plt.ylabel('Number of packets', axes=ax)
+    # ax.set_xlabel('Protocol')
+    # ax.set_ylabel('Number of packets')
+
+    while running == True:
+        network_traffic_capture = [["TCP Encrypted", tcp_encrypted], ["TCP", tcp_readable],
+                                   ["UDP Encrypted", udp_encrypted], ["UDP", udp_readable]]
+
+        data = pd.DataFrame(network_traffic_capture, columns=['Protocol', 'Packets'])
+
+        x = list(data.iloc[:, 0])
+        y = list(data.iloc[:, 1])
+        plt.cla()
+        ax.bar(x, y)
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+        time.sleep(0.2)
 
 
 def get_encrypted_traffic_percentage():
