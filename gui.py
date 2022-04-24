@@ -73,16 +73,6 @@ class App:
         self.GLabel_zachyceno_text["text"] = "0"
         self.GLabel_zachyceno_text.place(x=160,y=160,width=70,height=41)
 
-        GButton_vysledky=tk.Button(root)
-        GButton_vysledky["bg"] = "#efefef"
-        ft = tkFont.Font(family='Times',size=12)
-        GButton_vysledky["font"] = ft
-        GButton_vysledky["fg"] = "#000000"
-        GButton_vysledky["justify"] = "center"
-        GButton_vysledky["text"] = "Výsledky"
-        GButton_vysledky.place(x=10,y=210,width=112,height=41)
-        GButton_vysledky["command"] = self.GButton_vysledky_command
-
         GLabel_104=tk.Label(root)
         ft = tkFont.Font(family='Times',size=26)
         GLabel_104["font"] = ft
@@ -116,7 +106,7 @@ class App:
         GButton_graf_protokolu["fg"] = "#000000"
         GButton_graf_protokolu["justify"] = "center"
         GButton_graf_protokolu["text"] = "Graf protokolu"
-        GButton_graf_protokolu.place(x=10,y=270,width=112,height=41)
+        GButton_graf_protokolu.place(x=10,y=200,width=112,height=41)
         GButton_graf_protokolu["command"] = self.GButton_graf_protokolu_command
 
         GLabel_19=tk.Label(root)
@@ -169,45 +159,29 @@ class App:
         GLabel_248["text"] = "Změna počtu šifrovaných paketů:"
         GLabel_248.place(x=288,y=350,width=260,height=42)
 
-        GLabel_zmena_poct_sif_pkt_bool=tk.Label(root)
-        ft = tkFont.Font(family='Times',size=14)
-        GLabel_zmena_poct_sif_pkt_bool["font"] = ft
-        GLabel_zmena_poct_sif_pkt_bool["fg"] = "#333333"
-        GLabel_zmena_poct_sif_pkt_bool["justify"] = "left"
-        GLabel_zmena_poct_sif_pkt_bool["text"] = "Ano"
-        GLabel_zmena_poct_sif_pkt_bool.place(x=590,y=350,width=57,height=42)
-
         GLabel_zmena_poc_sif_pkt_hodnota=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
         GLabel_zmena_poc_sif_pkt_hodnota["font"] = ft
         GLabel_zmena_poc_sif_pkt_hodnota["fg"] = "#333333"
         GLabel_zmena_poc_sif_pkt_hodnota["justify"] = "left"
-        GLabel_zmena_poc_sif_pkt_hodnota["text"] = "o 16 % více"
-        GLabel_zmena_poc_sif_pkt_hodnota.place(x=670,y=350,width=100,height=42)
+        GLabel_zmena_poc_sif_pkt_hodnota["text"] = "16 %"
+        GLabel_zmena_poc_sif_pkt_hodnota.place(x=550,y=350,width=100,height=42)
 
         GLabel_180=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
         GLabel_180["font"] = ft
         GLabel_180["fg"] = "#333333"
         GLabel_180["justify"] = "left"
-        GLabel_180["text"] = "Změna objemu šifrovaných dát"
-        GLabel_180.place(x=278,y=390,width=260,height=42)
-
-        GLabel_zmena_obj_sif_dat_bool=tk.Label(root)
-        ft = tkFont.Font(family='Times',size=14)
-        GLabel_zmena_obj_sif_dat_bool["font"] = ft
-        GLabel_zmena_obj_sif_dat_bool["fg"] = "#333333"
-        GLabel_zmena_obj_sif_dat_bool["justify"] = "left"
-        GLabel_zmena_obj_sif_dat_bool["text"] = "Ano"
-        GLabel_zmena_obj_sif_dat_bool.place(x=590,y=390,width=57,height=42)
+        GLabel_180["text"] = "Změna objemu šifrovaných dát:"
+        GLabel_180.place(x=288,y=390,width=260,height=42)
 
         GLabel_zmena_obj_sif_dat_hodnota=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
         GLabel_zmena_obj_sif_dat_hodnota["font"] = ft
         GLabel_zmena_obj_sif_dat_hodnota["fg"] = "#333333"
         GLabel_zmena_obj_sif_dat_hodnota["justify"] = "left"
-        GLabel_zmena_obj_sif_dat_hodnota["text"] = "o 24 % více"
-        GLabel_zmena_obj_sif_dat_hodnota.place(x=670,y=390,width=100,height=42)
+        GLabel_zmena_obj_sif_dat_hodnota["text"] = "24 %"
+        GLabel_zmena_obj_sif_dat_hodnota.place(x=550,y=390,width=100,height=42)
 
         self.GLineEdit_293 = tk.Entry(root)
         self.GLineEdit_293["borderwidth"] = "1px"
@@ -263,11 +237,6 @@ class App:
         print("Stop...")
         main.set_running(False)
         self.is_capture = False
-
-
-    def GButton_vysledky_command(self):
-        print("Vysledky...")
-        main.print_stats_into_logs()
 
 
     def GButton_graf_protokolu_command(self):
