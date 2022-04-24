@@ -113,6 +113,21 @@ def create_graph():
     plt.show()
 
 
+def create_graph_source_ip():
+    plt.bar(*zip(*source_ip.items()))
+    plt.title("Source IPs")
+    plt.xlabel("Source IPs")
+    plt.ylabel("Number of packets")
+    plt.show()
+
+
+def create_graph_destination_ip():
+    plt.bar(*zip(*destination_ip.items()))
+    plt.title("Source IPs")
+    plt.xlabel("Source IPs")
+    plt.ylabel("Number of packets")
+    plt.show()
+
 def get_encrypted_traffic_percentage():
     if number_of_packets == 0:
         return 0
@@ -174,8 +189,9 @@ def main():
     logging.info('Starting script to show traffic')
     # Spusteni sbirani soukromych dat
     # Kliknutim na 'Run' souhlasite se vsim
-    live_capturing()
-    create_graph()
+    live_capturing(100)
+    create_graph_source_ip()
+    create_graph_destination_ip()
     logging.info('Schluss fur Heute')
 
 
