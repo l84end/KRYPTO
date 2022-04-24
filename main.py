@@ -23,6 +23,7 @@ running = True
 source_ip = {}
 destination_ip = {}
 network_traffic_capture = {}
+could_be_encrypted = 0
 data = {}
 fig = ""
 line = ""
@@ -142,6 +143,7 @@ def create_graph_source_ip():
     plt.bar(*zip(*source_ip.items()))
     plt.title("Source IPs")
     plt.xlabel("Source IPs")
+    plt.xticks(rotation=25)
     plt.ylabel("Number of packets")
     plt.show()
 
@@ -150,6 +152,7 @@ def create_graph_destination_ip():
     plt.bar(*zip(*destination_ip.items()))
     plt.title("Source IPs")
     plt.xlabel("Source IPs")
+    plt.xticks(rotation=25)
     plt.ylabel("Number of packets")
     plt.show()
 
