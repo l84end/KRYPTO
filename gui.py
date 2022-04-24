@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 import main
-from threading import Thread
+from threading import Thread, Timer
 import time
 
 class App:
@@ -132,8 +132,8 @@ class App:
         GLabel_648["font"] = ft
         GLabel_648["fg"] = "#333333"
         GLabel_648["justify"] = "left"
-        GLabel_648["text"] = " Celkový objem šifrovaných dat [B]:"
-        GLabel_648.place(x=295,y=170,width=260,height=42)
+        GLabel_648["text"] = "Celkový objem šifrovaných dat [B]:"
+        GLabel_648.place(x=300,y=170,width=260,height=42)
 
         self.GLabel_objem_sif_dat_text=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -159,13 +159,13 @@ class App:
         GLabel_248["text"] = "Změna počtu šifrovaných paketů:"
         GLabel_248.place(x=288,y=350,width=260,height=42)
 
-        GLabel_zmena_poc_sif_pkt_hodnota=tk.Label(root)
+        self.GLabel_zmena_poc_sif_pkt_hodnota=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
-        GLabel_zmena_poc_sif_pkt_hodnota["font"] = ft
-        GLabel_zmena_poc_sif_pkt_hodnota["fg"] = "#333333"
-        GLabel_zmena_poc_sif_pkt_hodnota["justify"] = "left"
-        GLabel_zmena_poc_sif_pkt_hodnota["text"] = "16 %"
-        GLabel_zmena_poc_sif_pkt_hodnota.place(x=550,y=350,width=100,height=42)
+        self.GLabel_zmena_poc_sif_pkt_hodnota["font"] = ft
+        self.GLabel_zmena_poc_sif_pkt_hodnota["fg"] = "#333333"
+        self.GLabel_zmena_poc_sif_pkt_hodnota["justify"] = "left"
+        self.GLabel_zmena_poc_sif_pkt_hodnota["text"] = "0 %"
+        self.GLabel_zmena_poc_sif_pkt_hodnota.place(x=550,y=350,width=100,height=42)
 
         GLabel_180=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
@@ -175,13 +175,13 @@ class App:
         GLabel_180["text"] = "Změna objemu šifrovaných dát:"
         GLabel_180.place(x=288,y=390,width=260,height=42)
 
-        GLabel_zmena_obj_sif_dat_hodnota=tk.Label(root)
+        self.GLabel_zmena_obj_sif_dat_hodnota=tk.Label(root)
         ft = tkFont.Font(family='Times',size=14)
-        GLabel_zmena_obj_sif_dat_hodnota["font"] = ft
-        GLabel_zmena_obj_sif_dat_hodnota["fg"] = "#333333"
-        GLabel_zmena_obj_sif_dat_hodnota["justify"] = "left"
-        GLabel_zmena_obj_sif_dat_hodnota["text"] = "24 %"
-        GLabel_zmena_obj_sif_dat_hodnota.place(x=550,y=390,width=100,height=42)
+        self.GLabel_zmena_obj_sif_dat_hodnota["font"] = ft
+        self.GLabel_zmena_obj_sif_dat_hodnota["fg"] = "#333333"
+        self.GLabel_zmena_obj_sif_dat_hodnota["justify"] = "left"
+        self.GLabel_zmena_obj_sif_dat_hodnota["text"] = "0 %"
+        self.GLabel_zmena_obj_sif_dat_hodnota.place(x=550,y=390,width=100,height=42)
 
         self.GLineEdit_293 = tk.Entry(root)
         self.GLineEdit_293["borderwidth"] = "1px"
@@ -222,10 +222,22 @@ class App:
             self.GLabel_objem_sif_dat_text["text"] = str(main.get_encrypted_traffic())
             self.GLabel_pomer_dat_text["text"] = str(main.get_encrypted_traffic_percentage())
             self.GLabel_pocet_sif_pkt_text["text"] = str(main.encrypted_packets())
+
+
             if self.pocet_paketu != 0 and self.pocet_paketu == main.get_number_of_packets():
                 self.is_capture = False
             time.sleep(0.5)
 
+    def set_odchylky_text(self):
+        if (self.is_capture == True):
+            self.GLabel_zmena_obj_sif_dat_hodnota["text"] = str(main.get_encrypted_data_change()) + " %"
+            self.GLabel_zmena_poc_sif_pkt_hodnota["text"] = str(main.get_packet_sent_change()) + " %"
+            print(str(main.get_packet_sent_change()) + " %")
+
+    def update_odchylky_text(self):
+        while (self.is_capture == True):
+            self.set_odchylky_text()
+            time.sleep(10)
 
     def GButton_start_command(self):
         print("Start...")
@@ -239,6 +251,8 @@ class App:
         threadTime.start()
         threadPkt = Thread(target=self.update_capture_pkt, args=())
         threadPkt.start()
+        threadOdchylky = Thread(target=self.update_odchylky_text, args=())
+        threadOdchylky.start()
 
 
     def GButton_stop_command(self):
