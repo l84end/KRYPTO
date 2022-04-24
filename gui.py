@@ -232,7 +232,6 @@ class App:
         if (self.is_capture == True):
             self.GLabel_zmena_obj_sif_dat_hodnota["text"] = str(main.get_encrypted_data_change()) + " %"
             self.GLabel_zmena_poc_sif_pkt_hodnota["text"] = str(main.get_packet_sent_change()) + " %"
-            print(str(main.get_packet_sent_change()) + " %")
 
     def update_odchylky_text(self):
         while (self.is_capture == True):
