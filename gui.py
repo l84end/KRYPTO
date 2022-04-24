@@ -190,7 +190,15 @@ class App:
         self.GLineEdit_293["fg"] = "#333333"
         self.GLineEdit_293["justify"] = "left"
         self.GLineEdit_293["text"] = "Entry"
-        self.GLineEdit_293.place(x=10, y=70, width=112, height=30)
+        self.GLineEdit_293.place(x=150, y=70, width=112, height=30)
+
+        GLabel_zachytit_pkt = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=12)
+        GLabel_zachytit_pkt["font"] = ft
+        GLabel_zachytit_pkt["fg"] = "#333333"
+        GLabel_zachytit_pkt["justify"] = "left"
+        GLabel_zachytit_pkt["text"] = "Limit paketů:"
+        GLabel_zachytit_pkt.place(x=10, y=70, width=100, height=42)
 
     def time_convert(self, sec):
         mins = sec // 60
