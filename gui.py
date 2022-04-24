@@ -61,6 +61,16 @@ class App:
         GButton_destination_ip.place(x=10, y=300, width=112, height=41)
         GButton_destination_ip["command"] = self.GButton_destination_ip_command
 
+        GButton_statistika = tk.Button(root)
+        GButton_statistika["bg"] = "#efefef"
+        ft = tkFont.Font(family='Times', size=12)
+        GButton_statistika["font"] = ft
+        GButton_statistika["fg"] = "#000000"
+        GButton_statistika["justify"] = "center"
+        GButton_statistika["text"] = "Statistika"
+        GButton_statistika.place(x=10, y=350, width=112, height=41)
+        GButton_statistika["command"] = self.GButton_statistika_command
+
         GLabel_cas=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
         GLabel_cas["font"] = ft
@@ -259,7 +269,6 @@ class App:
             time.sleep(10)
 
     def GButton_start_command(self):
-        print("Start...")
         self.pocet_paketu = int(self.GLineEdit_293.get())
         print(self.pocet_paketu)
         main.set_running(True)
@@ -275,23 +284,21 @@ class App:
 
 
     def GButton_stop_command(self):
-        print("Stop...")
         main.set_running(False)
         self.is_capture = False
 
 
     def GButton_graf_protokolu_command(self):
-        print("Graf protokolu...")
         main.create_graph()
 
     def GButton_source_ip_command(self):
-        print("Source IP ...")
         main.create_graph_source_ip()
-        main.print_stats_into_logs()
 
     def GButton_destination_ip_command(self):
-        print("Destination IP ...")
         main.create_graph_destination_ip()
+
+    def GButton_statistika_command(self):
+        print("Statistika")
         main.print_stats_into_logs()
 
 if __name__ == "__main__":
