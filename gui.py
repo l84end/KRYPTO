@@ -41,6 +41,26 @@ class App:
         GButton_stop.place(x=150,y=10,width=112,height=41)
         GButton_stop["command"] = self.GButton_stop_command
 
+        GButton_source_ip = tk.Button(root)
+        GButton_source_ip["bg"] = "#efefef"
+        ft = tkFont.Font(family='Times', size=12)
+        GButton_source_ip["font"] = ft
+        GButton_source_ip["fg"] = "#000000"
+        GButton_source_ip["justify"] = "center"
+        GButton_source_ip["text"] = "Zdrojová IP"
+        GButton_source_ip.place(x=10, y=250, width=112, height=41)
+        GButton_source_ip["command"] = self.GButton_source_ip_command
+
+        GButton_destination_ip = tk.Button(root)
+        GButton_destination_ip["bg"] = "#efefef"
+        ft = tkFont.Font(family='Times', size=12)
+        GButton_destination_ip["font"] = ft
+        GButton_destination_ip["fg"] = "#000000"
+        GButton_destination_ip["justify"] = "center"
+        GButton_destination_ip["text"] = "Cílová IP"
+        GButton_destination_ip.place(x=10, y=300, width=112, height=41)
+        GButton_destination_ip["command"] = self.GButton_destination_ip_command
+
         GLabel_cas=tk.Label(root)
         ft = tkFont.Font(family='Times',size=12)
         GLabel_cas["font"] = ft
@@ -264,6 +284,15 @@ class App:
         print("Graf protokolu...")
         main.create_graph()
 
+    def GButton_source_ip_command(self):
+        print("Source IP ...")
+        main.create_graph_source_ip()
+        main.print_stats_into_logs()
+
+    def GButton_destination_ip_command(self):
+        print("Destination IP ...")
+        main.create_graph_destination_ip()
+        main.print_stats_into_logs()
 
 if __name__ == "__main__":
     root = tk.Tk()
