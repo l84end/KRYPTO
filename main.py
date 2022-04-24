@@ -164,7 +164,7 @@ def create_graph_destination_ip():
 def get_packet_sent_change():
     global change_packet_count
     packets_sent = get_encrypted_traffic() - change_packet_count
-    if change_packet_count != 0:
+    if change_packet_count != 0 and packets_sent != 0:
         change = change_packet_count / packets_sent
     else:
         change = 0
@@ -174,12 +174,12 @@ def get_packet_sent_change():
 
 def get_encrypted_data_change():
     global change_data
-    percentage = get_encrypted_traffic() - change_data
-    if change_data != 0:
-        change = change_data / percentage
+    data_sent = get_encrypted_traffic() - change_data
+    if change_data != 0 and data_sent != 0:
+        change = change_data / data_sent
     else:
         change = 0
-    change_data = percentage
+    change_data = data_sent
 
     return round(100 * (1 - change), 2)
 
@@ -218,8 +218,6 @@ def print_stats_into_logs():
     logging.info(f"TCP readable: {tcp_readable}")
     logging.info(f"UDP encrypted: {udp_encrypted}")
     logging.info(f"UDP readable: {udp_readable}")
-    logging.info(f"Source IPs: {source_ip}")
-    logging.info(f"Destination IPs: {destination_ip}")
 
 
 def reset_statistics():
