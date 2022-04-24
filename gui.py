@@ -96,7 +96,7 @@ class App:
         self.GLabel_pomer_dat_text["font"] = ft
         self.GLabel_pomer_dat_text["fg"] = "#333333"
         self.GLabel_pomer_dat_text["justify"] = "left"
-        self.GLabel_pomer_dat_text["text"] = "86"
+        self.GLabel_pomer_dat_text["text"] = "0"
         self.GLabel_pomer_dat_text.place(x=570,y=70,width=57,height=42)
 
         GButton_graf_protokolu=tk.Button(root)
