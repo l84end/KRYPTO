@@ -19,3 +19,14 @@ dostupných knihoven.
  - wireshark
  - tshark
  - python3-tk
+
+To install:
+Tested for ubuntu 20 + 22
+1)  Libraries needed to run:
+sudo apt install wireshark
+sudo apt install python3-tk
+sudo apt install tshark
+2) Install requirement for project:
+pip3 install -r requirements.txt
+3)
+python3 gui.py

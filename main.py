@@ -42,6 +42,7 @@ def packet_decider(packet):
     global encrypted_traffic
     global source_ip
     global destination_ip
+    global could_be_encrypted
 
     if "IP" in packet:
         source_ip[packet.ip.src] = source_ip.get(packet.ip.src, 0) + 1
@@ -51,6 +52,8 @@ def packet_decider(packet):
                 udp_encrypted += 1
                 encrypted_traffic += sys.getsizeof(packet.udp.payload)
             elif str(packet).count("Layer") > 3:
+                if "DNS" in packet:
+                    could_be_encrypted += 1
                 udp_readable += 1
             else:
                 udp_encrypted += 1
@@ -73,7 +76,7 @@ def get_number_of_packets():
     return number_of_packets
 
 
-def live_capturing(pocet_paketu):
+def live_capturing(packets_to_detect):
     """
     Funkce sbira data z interface(nastaveno je maximalne 1000 packetu(packet_count))
     Mozna to bude chtit jine cislo interface, mne funguje 1. parametr
@@ -85,7 +88,7 @@ def live_capturing(pocet_paketu):
     capture = pyshark.LiveCapture(interface=str(interfaces[1]))
     file = open('packet.save', 'w')
 
-    if pocet_paketu == 0:
+    if packets_to_detect == 0:
         for packet in capture.sniff_continuously():
             file.write(str(packet) + '\n')
             packet_decider(packet)
@@ -93,7 +96,7 @@ def live_capturing(pocet_paketu):
                 logging.info("Stopping it")
                 break
     else:
-        for packet in capture.sniff_continuously(pocet_paketu):
+        for packet in capture.sniff_continuously(packets_to_detect):
             file.write(str(packet) + '\n')
             packet_decider(packet)
             if not running:
@@ -135,6 +138,22 @@ def create_graph():
         time.sleep(0.2)
 
 
+def create_graph_source_ip():
+    plt.bar(*zip(*source_ip.items()))
+    plt.title("Source IPs")
+    plt.xlabel("Source IPs")
+    plt.ylabel("Number of packets")
+    plt.show()
+
+
+def create_graph_destination_ip():
+    plt.bar(*zip(*destination_ip.items()))
+    plt.title("Source IPs")
+    plt.xlabel("Source IPs")
+    plt.ylabel("Number of packets")
+    plt.show()
+
+
 def get_encrypted_traffic_percentage():
     if number_of_packets == 0:
         return 0
@@ -157,6 +176,10 @@ def encrypted_packets():
 def set_running(status):
     global running
     running = status
+
+
+def get_could_be_encrypted():
+    return could_be_encrypted
 
 
 def print_stats_into_logs():
@@ -196,8 +219,9 @@ def main():
     logging.info('Starting script to show traffic')
     # Spusteni sbirani soukromych dat
     # Kliknutim na 'Run' souhlasite se vsim
-    live_capturing()
-    create_graph()
+    live_capturing(100)
+    create_graph_source_ip()
+    create_graph_destination_ip()
     logging.info('Schluss fur Heute')
 
 
